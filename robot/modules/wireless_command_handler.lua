@@ -21,10 +21,10 @@ end
 
 UpdateFunctions[#UpdateFunctions+1] = function()
 	while true do
-		local id, data, protocol = rednet.receive("command_handler", 10000)
+		local id, data = rednet.receive("command_handler", 10000)
 
-		if protocol == "command_handler" and data ~= nil then
-			CommandHandler.parse({id}, data)
+		if data ~= nil then
+			CommandHandler.parse({id}, data.command, data.args)
 		end
 	end
 end
