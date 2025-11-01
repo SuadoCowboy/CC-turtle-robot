@@ -22,7 +22,7 @@ require('modules.command_handler')
 require('modules.inventory')
 require('modules.refuel')
 require('modules.position')
--- require('modules.local_command_handler')
+require('modules.local_command_handler')
 require('modules.wireless_command_handler')
 
 
