@@ -27,7 +27,7 @@ function CommandHandler.parse(computersWhitelist, data)
 
 		TaskSystem.push(computersWhitelist, Commands[data.command].callback, data.args)
 	else
-		Write(computersWhitelist, 'Received invalid data type\n')
+		WriteError(computersWhitelist, 'Received invalid data type\n')
 	end
 end
 
