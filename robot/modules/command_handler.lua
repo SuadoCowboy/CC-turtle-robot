@@ -11,24 +11,23 @@ if Commands == nil then
 	Commands = {}
 end
 
-function CommandHandler.parse(computersWhitelist, data)
-	if type(data) == 'string' then
-		Write(computersWhitelist, 'Received:', data .. '\n')
+---@param computersWhitelist number[]?
+---@param data string
+---@param args table?
+function CommandHandler.parse(computersWhitelist, commandName, args)
+	if commandName == nil then
+		WriteError(computersWhitelist, 'Command is nil\n')
 
-	elseif type(data) == 'table' then
-		if data.command == nil or type(data.command) ~= 'string' then
-			Write(computersWhitelist, 'Missing command in received data\n')
-		end
-
-		if Commands[data.command] == nil then
-			WriteError(computersWhitelist, 'Command "' .. data.command .. '" not found\n')
-			return
-		end
-
-		TaskSystem.push(computersWhitelist, Commands[data.command].callback, data.args)
-	else
-		WriteError(computersWhitelist, 'Received invalid data type\n')
+	elseif type(commandName) ~= 'string' then
+		WriteError(computersWhitelist, 'Expected string for command but type is ' .. type(commandName) .. '\n')
 	end
+
+	if Commands[commandName] == nil then
+		WriteError(computersWhitelist, 'Command "' .. commandName .. '" not found\n')
+		return
+	end
+
+	TaskSystem.push(computersWhitelist, Commands[commandName].callback, args)
 end
 
 Commands['help'] = {
@@ -48,7 +47,7 @@ Commands['help'] = {
 
 		else
 			if type(Commands[command].description) == 'string' then
-				Write(ctx.task.computers, command .. ' ' .. Commands[c].description .. '\n')
+				Write(ctx.task.computers, command .. ' ' .. Commands[command].description .. '\n')
 			else
 				Write(ctx.task.computers, command .. '\n')
 			end
