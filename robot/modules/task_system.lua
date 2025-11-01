@@ -56,7 +56,7 @@ UpdateFunctions[#UpdateFunctions+1] = function()
 				if err == 'Terminated' then
 					Write(task.computers, 'Terminated task "' .. uuid .. '"\n')
 				else
-					WriteError(task.computers, 'An error occurred in task "' .. uuid .. '": ' .. result .. '\n')
+					WriteError(task.computers, 'An error occurred in task "' .. uuid .. '": ' .. err .. '\n')
 				end
 			end
 	
