@@ -7,7 +7,9 @@ CommandHandler = {}
 ---@class Command
 ---@field callback fun()
 ---@field description string
-Commands = {}
+if Commands == nil then
+	Commands = {}
+end
 
 function CommandHandler.parse(computersWhitelist, data)
 	if type(data) == 'string' then
@@ -23,28 +25,14 @@ function CommandHandler.parse(computersWhitelist, data)
 			return
 		end
 
-		local ok, err
-		if data.args == nil then
-			ok, err = pcall(Commands[data.command].callback, computersWhitelist)
-		else
-			ok, err = pcall(Commands[data.command].callback, computersWhitelist, unpack(data.args))
-		end
-
-		if not ok then
-			if err == 'Terminated' then
-				Write(computersWhitelist, 'Terminated\n')
-			else
-				WriteError(computersWhitelist, 'An error occurred: ' .. err .. '\n')
-			end
-		end
-
+		TaskSystem.push(computersWhitelist, Commands[data.command].callback, data.args)
 	else
 		Write(computersWhitelist, 'Received invalid data type\n')
 	end
 end
 
 Commands['help'] = {
-	callback = function(computersWhitelist, command)
+	callback = function(ctx, command)
 		if command == nil then
 			local commandsList = ''
 			for commandName, command in pairs(Commands) do
@@ -53,16 +41,16 @@ Commands['help'] = {
 				end
 			end
 
-			Write(computersWhitelist, commandsList)
+			Write(ctx.task.computers, commandsList)
 
 		elseif Commands[command] == nil then
-			WriteError(computersWhitelist, 'Unknown command "' .. command .. '"\n')
+			WriteError(ctx.task.computers, 'Unknown command "' .. command .. '"\n')
 
 		else
 			if type(Commands[command].description) == 'string' then
-				Write(computersWhitelist, command .. ' ' .. Commands[c].description .. '\n')
+				Write(ctx.task.computers, command .. ' ' .. Commands[c].description .. '\n')
 			else
-				Write(computersWhitelist, command .. '\n')
+				Write(ctx.task.computers, command .. '\n')
 			end
 		end
 	end,

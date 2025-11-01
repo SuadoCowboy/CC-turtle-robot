@@ -156,7 +156,7 @@ InitFunctions[#InitFunctions+1] = function()
 end
 
 Commands['go'] = {
-	callback = function(computersWhitelist, direction, distance)
+	callback = function(ctx, direction, distance)
 		if distance == nil then
 			distance = 1
 		else
@@ -167,40 +167,40 @@ Commands['go'] = {
 		if direction == 'left' then
 			while i < distance do
 				if not Position.turnLeft() then
-					WriteError(computersWhitelist, 'For some reason could not turn left\n')
+					WriteError(ctx.task.computers, 'For some reason could not turn left\n')
 					break
 				end
 				i = i + 1
 			end
-			Write(computersWhitelist, 'Turned left ' .. i .. ' time(s)\n')
+			Write(ctx.task.computers, 'Turned left ' .. i .. ' time(s)\n')
 
 		elseif direction == 'right' then
 			while i < distance do
 				if not Position.turnRight() then
-					WriteError(computersWhitelist, 'For some reason could not turn right\n')
+					WriteError(ctx.task.computers, 'For some reason could not turn right\n')
 					break
 				end
 				i = i + 1
 			end
-			Write(computersWhitelist, 'Turned right ' .. i .. ' time(s)\n')
+			Write(ctx.task.computers, 'Turned right ' .. i .. ' time(s)\n')
 
 		elseif direction == 'up' or direction == 'down' or direction == 'forward' or direction == 'back' then
 			while i < distance do
 				if not Position[direction]() then
-					WriteError(computersWhitelist, 'Something is blocking my way\n')
+					WriteError(ctx.task.computers, 'Something is blocking my way\n')
 					break
 				end
 				i = i + 1
 			end
-			Write(computersWhitelist, 'Moved ' .. i .. ' block(s)\n')
+			Write(ctx.task.computers, 'Moved ' .. i .. ' block(s)\n')
 		end
 	end,
 	description='<direction> <distance> - Works similarly to turtles\' "go" command'
 }
 
 Commands['coords'] = {
-	callback = function(computersWhitelist)
-		Write(computersWhitelist, 'X: ' .. Position.x .. ' Y: ' .. Position.y .. ' Z: ' .. Position.z .. ' F: ' .. Position.facing .. '\n')
+	callback = function(ctx)
+		Write(ctx.task.computers, 'X: ' .. Position.x .. ' Y: ' .. Position.y .. ' Z: ' .. Position.z .. ' F: ' .. Position.facing .. '\n')
 	end,
 	description='- Prints out the coordinates of the turtle'
 }

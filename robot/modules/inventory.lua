@@ -6,16 +6,16 @@ Inventory = {
 }
 
 Commands['inv_select'] = {
-	callback = function(computersWhitelist, slot)
+	callback = function(ctx, slot)
 		turtle.select(tonumber(slot))
-		Write(computersWhitelist, 'Selected slot ' .. slot .. '\n')
+		Write(ctx.task.computers, 'Selected slot ' .. slot .. '\n')
 	end,
 	description = '<slot> - Calls turtle.select(slot)'
 }
 
 Commands['inv_get'] = {
-	callback = function(computersWhitelist)
-		Write(computersWhitelist, turtle.getSelectedSlot() .. '\n')
+	callback = function(ctx)
+		Write(ctx.task.computers, turtle.getSelectedSlot() .. '\n')
 	end,
 	description = '- Calls turtle.getSelectedSlot()'
 }
