@@ -157,6 +157,11 @@ end
 
 Commands['go'] = {
 	callback = function(ctx, direction, distance)
+		if direction == nil then
+			os.queueEvent('command_handler', ctx.task.computers, 'help', {'go'})
+			return
+		end
+
 		if distance == nil then
 			distance = 1
 		else
