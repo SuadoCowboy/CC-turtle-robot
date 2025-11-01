@@ -193,6 +193,9 @@ Commands['go'] = {
 				i = i + 1
 			end
 			Write(ctx.task.computers, 'Moved ' .. i .. ' block(s)\n')
+
+		else
+			WriteError(ctx.task.computers, 'Invalid direction\n')
 		end
 	end,
 	description='<direction> <distance> - Works similarly to turtles\' "go" command'
