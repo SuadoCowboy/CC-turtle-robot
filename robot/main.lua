@@ -5,14 +5,19 @@ Exit Codes:
 	2 - update returned an error
 ]]--
 
+math.randomseed(os.time())
+
 DebugMode = false
 
 InitFunctions = {}
 UpdateFunctions = {}
 CleanupFunctions = {}
 
+require('uuid')
+
 require('modules.rednet')
 require('modules.write')
+require('modules.task_system')
 require('modules.command_handler')
 require('modules.inventory')
 require('modules.refuel')
